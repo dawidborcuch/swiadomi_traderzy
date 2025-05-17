@@ -1,0 +1,33 @@
+{% extends 'main/base.html' %}
+{% load django_bootstrap5 %}
+
+{% block title %}Płatności{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="mb-4">Informacje o płatnościach</h1>
+        {% if payment_info %}
+            {% for payment in payment_info %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">{{ payment.title }}</h2>
+                    <p class="card-text">{{ payment.description }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="h3 mb-0">
+                            {{ payment.price }} {{ payment.currency }}
+                            <small class="text-muted">/miesiąc</small>
+                        </div>
+                        <button class="btn btn-primary btn-lg">Dołącz teraz</button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="alert alert-info">
+                Brak dostępnych informacji o płatnościach w tej chwili.
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 
