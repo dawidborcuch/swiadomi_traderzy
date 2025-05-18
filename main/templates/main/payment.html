@@ -1,33 +1,94 @@
 {% extends 'main/base.html' %}
 {% load django_bootstrap5 %}
 
-{% block title %}Płatności{% endblock %}
+{% block title %}Kup dostęp{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-12">
-        <h1 class="mb-4">Informacje o płatnościach</h1>
-        {% if payment_info %}
-            {% for payment in payment_info %}
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h2 class="card-title">{{ payment.title }}</h2>
-                    <p class="card-text">{{ payment.description }}</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="h3 mb-0">
-                            {{ payment.price }} {{ payment.currency }}
-                            <small class="text-muted">/miesiąc</small>
-                        </div>
-                        <button class="btn btn-primary btn-lg">Dołącz teraz</button>
-                    </div>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card bg-light text-dark shadow-lg">
+            <div class="card-body">
+                <h1 class="text-center mb-4">Pakiet Premium</h1>
+                <div class="text-center mb-4">
+                    <h2 class="display-4">$30</h2>
+                    <p class="text-muted">/miesiąc</p>
+                </div>
+                
+                <div class="features mb-4">
+                    <h3 class="mb-3">Co otrzymujesz:</h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-3">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Dostęp do prywatnej grupy na Telegramie
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            2x w tygodniu nagrania z analizą rynku krypto
+                            <ul class="text-muted">
+                                <li>Poniedziałek - analiza tygodniowa</li>
+                                <li>Czwartek - aktualizacja sytuacji</li>
+                            </ul>
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Wsparcie społeczności traderów
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Dostęp do archiwum analiz
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="text-center">
+                    <button class="btn btn-primary btn-lg px-5">
+                        <i class="fab fa-telegram me-2"></i>
+                        Dołącz teraz
+                    </button>
                 </div>
             </div>
-            {% endfor %}
-        {% else %}
-            <div class="alert alert-info">
-                Brak dostępnych informacji o płatnościach w tej chwili.
-            </div>
-        {% endif %}
+        </div>
     </div>
 </div>
+
+<style>
+.card {
+    border: none;
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.shadow-lg {
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.1)!important;
+}
+
+.btn-primary {
+    background-color: #0088cc;
+    border-color: #0088cc;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #006699;
+    border-color: #006699;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.features li {
+    font-size: 1.1rem;
+}
+
+.features ul {
+    margin-left: 2rem;
+    margin-top: 0.5rem;
+}
+</style>
 {% endblock %} 

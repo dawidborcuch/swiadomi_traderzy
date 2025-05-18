@@ -1,0 +1,28 @@
+{% extends 'main/base.html' %}
+{% load django_bootstrap5 %}
+
+{% block title %}Rejestracja{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card bg-light text-dark shadow-lg">
+                <div class="card-body p-5">
+                    <h2 class="text-center mb-4">Rejestracja</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">Zarejestruj się</button>
+                        </div>
+                    </form>
+                    <div class="text-center mt-4">
+                        <p>Masz już konto? <a href="{% url 'main:login' %}" class="text-primary">Zaloguj się</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

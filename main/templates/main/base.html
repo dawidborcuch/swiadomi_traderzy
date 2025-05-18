@@ -10,47 +10,164 @@
     {% bootstrap_javascript %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
+        body {
+            background-image: url("{% static 'images/background.png' %}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        .navbar {
+            background-color: rgba(0, 136, 204, 0.95) !important;
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
         .navbar-brand {
             font-weight: bold;
+            font-size: 1.5rem;
+            color: #fff !important;
+            transition: transform 0.3s ease;
         }
-        .footer {
-            margin-top: 2rem;
-            padding: 1rem 0;
-            background-color: #f8f9fa;
+
+        .navbar-brand:hover {
+            transform: translateY(-2px);
         }
+
         .navbar-brand img {
             height: 40px;
             margin-right: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            margin: 0 0.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #fff !important;
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            color: #fff !important;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .navbar-toggler {
+            border: none;
+            padding: 0.5rem;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        @media (max-width: 991.98px) {
+            .navbar-collapse {
+                background-color: rgba(0, 136, 204, 0.98);
+                padding: 1rem;
+                border-radius: 8px;
+                margin-top: 1rem;
+            }
+            
+            .nav-link {
+                margin: 0.5rem 0;
+            }
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+        }
+
+        .footer {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-top: 1px solid #dee2e6;
+            backdrop-filter: blur(5px);
+        }
+
+        .premium-link {
+            color: #ffd700 !important;
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .premium-link:hover {
+            color: #ffed4a !important;
+            background-color: rgba(255, 215, 0, 0.1);
+        }
+
+        .premium-link.active {
+            background-color: rgba(255, 215, 0, 0.15);
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="{% url 'main:home' %}">
                 <img src="{% static 'images/logo-yt-swiadomi-traderzy-1640x856.jpg' %}" alt="Logo Świadomi Traderzy">
-                Świadomi Traderzy
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'main:home' %}">Strona główna</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'main:home' %}">
+                            <i class="fas fa-home me-1"></i>Strona główna
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'main:about' %}">O nas</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'videos' %}active{% endif %}" href="{% url 'main:videos' %}">
+                            <i class="fas fa-video me-1"></i>Nagrania
+                        </a>
+                    </li>
+                    {% if user.is_authenticated and user.profile.has_premium_access %}
+                    <li class="nav-item">
+                        <a class="nav-link premium-link {% if request.resolver_match.url_name == 'premium_videos' %}active{% endif %}" href="{% url 'main:premium_videos' %}">
+                            <i class="fas fa-crown me-1"></i>Nagrania premium
+                        </a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'courses' %}active{% endif %}" href="{% url 'main:courses' %}">
+                            <i class="fas fa-graduation-cap me-1"></i>Edukacja
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'main:videos' %}">Filmy</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'payment' %}active{% endif %}" href="{% url 'main:payment' %}">
+                            <i class="fas fa-shopping-cart me-1"></i>Kup dostęp
+                        </a>
                     </li>
+                    {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'main:training' %}">Szkolenia</a>
+                        <a class="nav-link" href="{% url 'main:logout' %}">
+                            <i class="fas fa-sign-out-alt me-1"></i>Wyloguj
+                        </a>
                     </li>
+                    {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'main:payment' %}">Płatności</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'login' %}active{% endif %}" href="{% url 'main:login' %}">
+                            <i class="fas fa-sign-in-alt me-1"></i>Zaloguj
+                        </a>
                     </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -62,9 +179,9 @@
         {% endblock %}
     </div>
 
-    <footer class="footer">
+    <footer class="footer mt-5 py-3">
         <div class="container text-center">
-            <p>&copy; 2024 Świadomi Traderzy. Wszelkie prawa zastrzeżone.</p>
+            <p class="mb-0">&copy; 2024 Świadomi Traderzy. Wszelkie prawa zastrzeżone.</p>
         </div>
     </footer>
 </body>

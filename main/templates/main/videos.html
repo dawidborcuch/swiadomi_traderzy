@@ -1,39 +1,73 @@
 {% extends 'main/base.html' %}
 {% load django_bootstrap5 %}
-{% load youtube_filters %}
 
-{% block title %}Filmy{% endblock %}
+{% block title %}Nagrania{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-12">
-        <h1 class="mb-4">Najnowsze filmy</h1>
-        {% if videos %}
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                {% for video in videos %}
-                <div class="col">
-                    <div class="card h-100">
-                        <div class="ratio ratio-16x9">
-                            <iframe src="{{ video.video_url|youtube_embed }}" 
-                                    title="{{ video.title }}" 
-                                    allowfullscreen></iframe>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">{{ video.title }}</h5>
-                            <p class="card-text">{{ video.description }}</p>
-                            <p class="card-text">
-                                <small class="text-muted">Dodano: {{ video.date_added|date:"d.m.Y" }}</small>
-                            </p>
-                        </div>
-                    </div>
+<div class="container mt-4">
+    <h2 class="mb-4">Nagrania publiczne</h2>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for video in public_videos %}
+        <div class="col">
+            <div class="card h-100">
+                <img src="{{ video.thumbnail_url }}" class="card-img-top" alt="Miniatura">
+                <div class="card-body">
+                    <h5 class="card-title">{{ video.title }}</h5>
+                    <p class="card-text">{{ video.description }}</p>
+                    <a href="https://www.youtube.com/watch?v={{ video.video_id }}" target="_blank" class="btn btn-primary">Obejrzyj</a>
                 </div>
-                {% endfor %}
             </div>
-        {% else %}
-            <div class="alert alert-info">
-                Brak dostępnych filmów w tej chwili.
+        </div>
+        {% empty %}
+        <div class="col">
+            <div class="card h-100 text-center align-items-center justify-content-center d-flex" style="min-height:200px;">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                    <i class="fas fa-info-circle fa-2x text-secondary mb-3"></i>
+                    <p class="mb-0">Brak nagrań publicznych.</p>
+                </div>
             </div>
-        {% endif %}
+        </div>
+        {% endfor %}
     </div>
+
+    {% if has_premium %}
+    <hr class="my-5">
+    <h2 class="mb-4 text-warning"><i class="fas fa-crown me-2"></i>Nagrania premium</h2>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for video in premium_videos %}
+        <div class="col">
+            <div class="card h-100 border-warning">
+                <img src="{{ video.thumbnail_url }}" class="card-img-top" alt="Miniatura">
+                <div class="card-body">
+                    <h5 class="card-title text-warning">{{ video.title }}</h5>
+                    <p class="card-text">{{ video.description }}</p>
+                    <a href="https://www.youtube.com/watch?v={{ video.video_id }}" target="_blank" class="btn btn-warning text-dark fw-bold"><i class="fas fa-crown me-1"></i>Obejrzyj premium</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col">
+            <div class="card h-100 text-center align-items-center justify-content-center d-flex border-warning" style="min-height:200px;">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                    <i class="fas fa-crown fa-2x text-warning mb-3"></i>
+                    <p class="mb-0">Brak nagrań premium.</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <hr class="my-5">
+    <div class="card bg-light text-dark shadow-lg">
+        <div class="card-body text-center p-5">
+            <i class="fas fa-crown fa-3x text-warning mb-3"></i>
+            <h3 class="mb-3">Nagrania premium</h3>
+            <p class="mb-4">Uzyskaj dostęp do ekskluzywnych materiałów premium!</p>
+            <a href="{% url 'main:payment' %}" class="btn btn-warning btn-lg">
+                <i class="fas fa-crown me-2"></i>Kup dostęp premium
+            </a>
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %} 
